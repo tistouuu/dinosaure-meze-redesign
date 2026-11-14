@@ -209,6 +209,74 @@
   .factcell .v.open{ color: var(--accent2); }
   .factcell .v.closed{ color: var(--ink-faint); }
 
+  /* ============ VISIT BANNER ============ */
+  .visit-banner{ background: var(--bg-raised); border-bottom: 1px solid var(--border); }
+  .banner-grid{
+    display:grid; grid-template-columns: 1fr 1fr; gap: 2.6rem;
+    padding: 2.4rem 1.5rem;
+  }
+  .banner-status{ border-right: 1px solid var(--border); padding-right: 2.6rem; }
+  .banner-status p{ color: var(--ink-soft); font-size:0.92rem; margin-top:0.2rem; }
+  .banner-hours{
+    font-family: var(--font-display); font-weight:600; color: var(--ink);
+    font-size: clamp(2rem, 4.6vw, 2.9rem); line-height:1; margin:0.55rem 0 0.7rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .banner-hours.open{ color: var(--accent2); }
+  .banner-hours.closed{ color: var(--ink-faint); }
+  .banner-highlight{
+    display:inline-block; margin-top:0.9rem; padding:0.5rem 0.9rem;
+    background: var(--accent2-soft); color: var(--accent2);
+    border-radius:4px; font-size:0.86rem; font-weight:600;
+  }
+  .banner-group h3{ font-size:1.2rem; margin:0.5rem 0 0.5rem; }
+  .banner-group p{ color: var(--ink-soft); font-size:0.92rem; margin-top:0.5rem; }
+  .banner-email{ font-family: var(--font-mono) !important; font-size:1rem !important; color:var(--ink); margin-top:0.25rem !important; }
+  .checklist{
+    list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:0.4rem 1.2rem;
+    margin-top:0.7rem; font-size:0.86rem; color: var(--ink-soft);
+  }
+  .checklist li{ padding-left:0.95rem; position:relative; }
+  .checklist li::before{ content:"·"; position:absolute; left:0; top:-0.1em; color: var(--accent); font-weight:700; font-size:1.2em; }
+  @media (max-width: 760px){
+    .banner-grid{ grid-template-columns: 1fr; gap:2rem; padding:2.2rem 1.5rem; }
+    .banner-status{ border-right:none; border-bottom:1px solid var(--border); padding-right:0; padding-bottom:2rem; }
+  }
+  @media (max-width: 420px){ .checklist{ grid-template-columns:1fr; } }
+
+  /* ============ VIDEOS ============ */
+  .video-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(17rem,1fr)); gap:1.3rem; margin-top:1.8rem; }
+  .video-card{ padding:1.4rem; }
+  .video-card video{ width:100%; border-radius:4px; background:#000; display:block; }
+  .video-card .meta{ font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent2); }
+  .video-card h4{ font-size:1.05rem; margin:0.5rem 0 0.4rem; }
+  .video-card p{ color:var(--ink-soft); font-size:0.9rem; }
+  .video-link{
+    display:inline-flex; align-items:center; gap:0.4rem; margin-top:0.9rem;
+    font-family: var(--font-mono); font-size:0.82rem; font-weight:500;
+    color: var(--accent); text-decoration:none;
+  }
+  .video-link:hover{ text-decoration:underline; }
+
+  /* ============ LIGHTBOX ============ */
+  .shot-btn{ display:block; width:100%; height:100%; padding:0; border:none; background:none; cursor:zoom-in; }
+  .lightbox{
+    position:fixed; inset:0; z-index:200; display:none;
+    align-items:center; justify-content:center; padding: 3rem 1.5rem;
+    background: rgba(15,12,9,0.92);
+  }
+  .lightbox.open{ display:flex; }
+  .lightbox-fig{ max-width:min(90vw, 64rem); max-height:88vh; display:flex; flex-direction:column; gap:0.8rem; }
+  .lightbox-fig img{ max-width:100%; max-height:76vh; width:auto; height:auto; border-radius:4px; margin:0 auto; box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6); }
+  .lightbox-cap{ color:#F2ECDF; font-size:0.86rem; text-align:center; }
+  .lightbox-cap b{ font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.06em; font-size:0.72rem; color:#E3A467; font-weight:500; display:block; margin-bottom:0.2rem; }
+  .lightbox-close{
+    position:fixed; top:1.2rem; right:1.5rem; z-index:201;
+    width:2.6rem; height:2.6rem; border-radius:50%; border:1px solid rgba(247,241,228,0.35);
+    background:rgba(247,241,228,0.08); color:#F7F1E4; font-size:1.3rem; line-height:1; cursor:pointer;
+  }
+  .lightbox-close:hover{ background:rgba(247,241,228,0.18); }
+
   /* ============ GALLERY ============ */
   .gallery{
     display:grid; gap:0.9rem;
@@ -357,8 +425,7 @@
   }
   footer .wrap{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; }
 </style>
-</head>
-<body>
+</head><body>
 
 <nav class="topnav">
   <div class="wrap">
@@ -403,10 +470,6 @@
       </div>
       <div class="factstrip">
         <div class="factcell">
-          <div class="k">Aujourd'hui</div>
-          <div class="v" id="today-hours">—</div>
-        </div>
-        <div class="factcell">
           <div class="k">Adresse</div>
           <div class="v">RD613, Montmèze · 34140 Mèze</div>
         </div>
@@ -422,6 +485,34 @@
       <span style="background:#6E4525;"></span>
       <span style="background:#4F7D74;"></span>
       <span style="background:#3C6D62;"></span>
+    </div>
+  </section>
+
+  <section class="visit-banner">
+    <div class="wrap banner-grid">
+      <div class="banner-status">
+        <span class="eyebrow">Visite individuelle · aujourd'hui</span>
+        <div class="banner-hours" id="banner-hours">—</div>
+        <p>Dernière entrée en caisse 1h30 avant la fermeture.</p>
+        <span class="banner-highlight">Aucune réservation nécessaire pour les visiteurs individuels</span>
+      </div>
+      <div class="banner-group">
+        <span class="eyebrow">Visite de groupe</span>
+        <h3>Vous venez en groupe ?</h3>
+        <p>Réservation obligatoire — demande de devis par email :</p>
+        <p class="banner-email"><a href="mailto:reservationdino@outlook.com">reservationdino@outlook.com</a></p>
+        <p>Merci de préciser :</p>
+        <ul class="checklist">
+          <li>Nom de l'établissement</li>
+          <li>Ville</li>
+          <li>Numéro de téléphone</li>
+          <li>Date de visite souhaitée</li>
+          <li>Nombre d'enfants</li>
+          <li>Nombre d'accompagnateurs</li>
+          <li>Âge ou niveau scolaire</li>
+          <li>Horaires d'arrivée et de départ</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -478,53 +569,72 @@
       </div>
       <div class="gallery reveal">
         <figure class="shot big">
-          <img src="img/DSC0049-2-scaled.jpg" alt="Visite du musée-parc des dinosaures de Mèze">
+          <button class="shot-btn" type="button"><img src="img/DSC0049-2-scaled.jpg" alt="Visite du musée-parc des dinosaures de Mèze"></button>
           <figcaption><b>Sur le terrain</b>Le parcours de visite, à ciel ouvert</figcaption>
         </figure>
         <figure class="shot">
-          <img src="img/dinosaure_reconstitutions_1.jpg" alt="Reconstitution grandeur réelle d'un dinosaure">
+          <button class="shot-btn" type="button"><img src="img/dinosaure_reconstitutions_1.jpg" alt="Reconstitution grandeur réelle d'un dinosaure"></button>
           <figcaption><b>Reconstitution</b>Grandeur réelle</figcaption>
         </figure>
         <figure class="shot">
-          <img src="img/dinosaure_oeuf_1.jpg" alt="Œuf de dinosaure fossilisé exposé au musée">
+          <button class="shot-btn" type="button"><img src="img/dinosaure_oeuf_1.jpg" alt="Œuf de dinosaure fossilisé exposé au musée"></button>
           <figcaption><b>Œuf fossilisé</b>Pièce du gisement</figcaption>
         </figure>
         <figure class="shot">
-          <img src="img/dinosaure_fossile_4.jpg" alt="Fossile original de dinosaure exposé en vitrine">
+          <button class="shot-btn" type="button"><img src="img/dinosaure_fossile_4.jpg" alt="Fossile original de dinosaure exposé en vitrine"></button>
           <figcaption><b>Fossile original</b>Pièce de collection</figcaption>
         </figure>
         <figure class="shot">
-          <img src="img/DSC0054-2-scaled.jpg" alt="Vue du musée-parc des dinosaures de Mèze">
+          <button class="shot-btn" type="button"><img src="img/DSC0054-2-scaled.jpg" alt="Vue du musée-parc des dinosaures de Mèze"></button>
           <figcaption><b>Visite</b>Le musée-parc</figcaption>
         </figure>
         <figure class="shot">
-          <img src="img/dinosaure_reconstitutions_3.jpg" alt="Reconstitution de dinosaure dans le parc">
+          <button class="shot-btn" type="button"><img src="img/dinosaure_reconstitutions_3.jpg" alt="Reconstitution de dinosaure dans le parc"></button>
           <figcaption><b>Reconstitution</b>Dans le parc</figcaption>
         </figure>
         <figure class="shot">
-          <img src="img/dinosaure_decouverte_1.jpg" alt="Chantier de fouilles de dinosaures à Mèze">
+          <button class="shot-btn" type="button"><img src="img/dinosaure_decouverte_1.jpg" alt="Chantier de fouilles de dinosaures à Mèze"></button>
           <figcaption><b>Fouilles</b>Chantier actif</figcaption>
         </figure>
         <figure class="shot">
-          <img src="img/dinosaure_oeuf_3.jpg" alt="Œuf de dinosaure mis au jour sur le site">
+          <button class="shot-btn" type="button"><img src="img/dinosaure_oeuf_3.jpg" alt="Œuf de dinosaure mis au jour sur le site"></button>
           <figcaption><b>Œuf fossilisé</b>Mis au jour sur site</figcaption>
         </figure>
         <figure class="shot">
-          <img src="img/dinosaure_reconstitutions_8.jpg" alt="Reconstitution de dinosaure herbivore">
+          <button class="shot-btn" type="button"><img src="img/dinosaure_reconstitutions_8.jpg" alt="Reconstitution de dinosaure herbivore"></button>
           <figcaption><b>Reconstitution</b>Herbivore</figcaption>
         </figure>
         <figure class="shot">
-          <img src="img/dinosaure_dinosaures_2.jpg" alt="Dinosaure présenté dans le parcours du musée">
+          <button class="shot-btn" type="button"><img src="img/dinosaure_dinosaures_2.jpg" alt="Dinosaure présenté dans le parcours du musée"></button>
           <figcaption><b>Au fil du parcours</b>Espèce du musée</figcaption>
         </figure>
         <figure class="shot">
-          <img src="img/dinosaure_fossile_6.jpg" alt="Fossile de dinosaure présenté en vitrine">
+          <button class="shot-btn" type="button"><img src="img/dinosaure_fossile_6.jpg" alt="Fossile de dinosaure présenté en vitrine"></button>
           <figcaption><b>Fossile original</b>En vitrine</figcaption>
         </figure>
         <figure class="shot">
-          <img src="img/dinosaure_decouverte_10.jpg" alt="Vue du gisement de fouilles à Montmèze">
+          <button class="shot-btn" type="button"><img src="img/dinosaure_decouverte_10.jpg" alt="Vue du gisement de fouilles à Montmèze"></button>
           <figcaption><b>Fouilles</b>Le gisement</figcaption>
         </figure>
+      </div>
+
+      <div class="subhead reveal">
+        <span class="eyebrow">Vidéos</span>
+        <h3>À voir en vidéo</h3>
+      </div>
+      <div class="video-grid reveal">
+        <div class="card video-card">
+          <div class="meta">Vidéo du musée</div>
+          <h4>La chasse aux œufs de dinosaures</h4>
+          <p>Une vidéo tournée sur le gisement, montrant la recherche et l'extraction d'œufs fossiles.</p>
+          <video controls preload="none" style="margin-top:0.9rem;"><source src="video/la-chasse-aux-oeufs-de-dinosaures.mp4" type="video/mp4"></video>
+        </div>
+        <div class="card video-card">
+          <div class="meta">Reportage France 3</div>
+          <h4>France 3 Ici — Occitanie</h4>
+          <p>Un reportage télévisé consacré au musée et au gisement de Montmèze.</p>
+          <a class="video-link" href="https://www.dinosaure.eu/wp-content/uploads/2026/03/France-3-Ici-26032026.mp4" target="_blank" rel="noopener">Regarder sur dinosaure.eu ↗</a>
+        </div>
       </div>
     </div>
   </section>
@@ -848,6 +958,14 @@
 
 </main>
 
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Fermer l'image">&times;</button>
+  <figure class="lightbox-fig">
+    <img id="lightbox-img" src="" alt="">
+    <figcaption class="lightbox-cap" id="lightbox-cap"></figcaption>
+  </figure>
+</div>
+
 <footer>
   <div class="wrap" style="flex-direction:column; gap:0.4rem;">
     <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; width:100%;">
@@ -871,12 +989,44 @@
       if (m === 10) return {open:true, from:'14h', to:'17h'};
       if (m === 11) return (day === 24 || day === 25 || day === 31) ? {open:false} : {open:true, from:'14h', to:'17h'};
     }
-    var el = document.getElementById('today-hours');
+    var el = document.getElementById('banner-hours');
     if (el) {
       var h = seasonHours(new Date());
-      if (h && h.open) { el.textContent = 'Ouvert · ' + h.from + ' – ' + h.to; el.classList.add('open'); }
+      if (h && h.open) { el.textContent = h.from + ' – ' + h.to; el.classList.add('open'); }
       else { el.textContent = 'Fermé aujourd\'hui'; el.classList.add('closed'); }
     }
+
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightbox-img');
+    var lightboxCap = document.getElementById('lightbox-cap');
+    var lastTrigger = null;
+
+    function openLightbox(btn){
+      var img = btn.querySelector('img');
+      var fig = btn.closest('figure');
+      var caption = fig ? fig.querySelector('figcaption') : null;
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt || '';
+      lightboxCap.innerHTML = caption ? caption.innerHTML : '';
+      lastTrigger = btn;
+      lightbox.classList.add('open');
+      document.getElementById('lightbox-close').focus();
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(){
+      lightbox.classList.remove('open');
+      lightboxImg.src = '';
+      document.body.style.overflow = '';
+      if (lastTrigger) lastTrigger.focus();
+    }
+    document.querySelectorAll('.shot-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){ openLightbox(btn); });
+    });
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', function(e){ if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+    });
 
     var items = document.querySelectorAll('.reveal');
     if (reduceMotion || !('IntersectionObserver' in window)) {
