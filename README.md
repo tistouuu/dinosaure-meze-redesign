@@ -6,7 +6,6 @@ Ouvrir `index.html` dans un navigateur, ou servir le dossier avec n'importe quel
 
 **Contenu média :**
 - `img/` — 19 photos reprises du site officiel (reconstitutions, fossiles, œufs, fouilles)
-- `video/la-chasse-aux-oeufs-de-dinosaures.mp4` — vidéo promotionnelle du musée, intégrée localement
-- Le reportage France 3 n'est pas repris ici (contenu audiovisuel tiers, et fichier de 126 Mo au-delà de la limite de 100 Mo par fichier de GitHub) — un lien vers la vidéo sur le site officiel est conservé dans la page.
+- Les deux vidéos de la page d'accueil (« La chasse aux œufs de dinosaures » et le reportage France 3) ne sont pas hébergées dans ce repo — un lien vers chacune sur le site officiel est conservé dans la page. La vidéo du musée (27 Mo) a été écartée par les garde-fous automatiques de l'outil utilisé pour committer ; le reportage France 3 (126 Mo, contenu audiovisuel tiers) dépasse de toute façon la limite de 100 Mo par fichier de GitHub.
 
 **Important :** le musée interdit explicitement tout usage commercial et toute diffusion sur le web de prises de vue du site sans autorisation écrite. Ce repo est public et les photos/la vidéo y sont diffusées à la demande du propriétaire de ce repo, en connaissance de cette restriction — à garder en tête en cas de doute sur la conformité.
