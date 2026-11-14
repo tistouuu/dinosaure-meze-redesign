@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Musée-Parc des Dinosaures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,340;0,460;0,600;0,720;1,460&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --bg: #EEEAE1;
+    --bg-raised: #F8F5EC;
+    --bg-sunken: #E3DCCC;
+    --ink: #211C16;
+    --ink-soft: #5B4F3F;
+    --ink-faint: #8B7F6B;
+    --border: #D7CBB2;
+    --border-strong: #C2B396;
+    --accent: #9C5A2E;
+    --accent-ink: #FBF6EC;
+    --accent-soft: #E8D9C4;
+    --accent2: #3C6D62;
+    --accent2-soft: #DCE6DE;
+
+    --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --font-body: "Public Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+    --measure: 38rem;
+    --shadow: 0 1px 2px rgba(33,28,22,0.06), 0 8px 24px -12px rgba(33,28,22,0.18);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #1B1712;
+      --bg-raised: #241F18;
+      --bg-sunken: #171410;
+      --ink: #EDE7DA;
+      --ink-soft: #BBAE96;
+      --ink-faint: #837760;
+      --border: #3B3225;
+      --border-strong: #4A4030;
+      --accent: #DB9257;
+      --accent-ink: #1B1712;
+      --accent-soft: #3A2C1E;
+      --accent2: #76AA9C;
+      --accent2-soft: #23342C;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 32px -16px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #1B1712;
+    --bg-raised: #241F18;
+    --bg-sunken: #171410;
+    --ink: #EDE7DA;
+    --ink-soft: #BBAE96;
+    --ink-faint: #837760;
+    --border: #3B3225;
+    --border-strong: #4A4030;
+    --accent: #DB9257;
+    --accent-ink: #1B1712;
+    --accent-soft: #3A2C1E;
+    --accent2: #76AA9C;
+    --accent2-soft: #23342C;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 32px -16px rgba(0,0,0,0.6);
+  }
+
+  /* ============ RESET ============ */
+  *,*::before,*::after{ box-sizing: border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img,svg{ max-width:100%; display:block; }
+  a{ color: var(--accent); text-decoration-thickness: 1.5px; text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible{
+    outline: 2.5px solid var(--accent2);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  h1,h2,h3,h4{ font-family: var(--font-display); font-weight: 600; margin: 0; text-wrap: balance; color: var(--ink); }
+  p{ margin:0; }
+  ul{ margin:0; padding:0; }
+  table{ border-collapse: collapse; width: 100%; }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+
+  /* ============ LAYOUT HELPERS ============ */
+  .wrap{ max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+  .measure{ max-width: var(--measure); }
+  section{ position: relative; }
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .reveal{ opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.is-visible{ opacity: 1; transform: translateY(0); }
+
+  /* ============ TOP NAV ============ */
+  .topnav{
+    position: sticky; top:0; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topnav .wrap{
+    display:flex; align-items:center; gap:1.5rem;
+    height: 3.6rem;
+  }
+  .brand{
+    font-family: var(--font-display); font-weight: 600; font-size: 1.05rem;
+    color: var(--ink); text-decoration:none; white-space:nowrap;
+  }
+  .brand em{ color: var(--accent); font-style: normal; }
+  .navlinks{
+    display:flex; gap: 1.35rem; overflow-x:auto; scrollbar-width:none;
+    font-size: 0.86rem; font-weight: 500;
+  }
+  .navlinks::-webkit-scrollbar{ display:none; }
+  .navlinks a{ color: var(--ink-soft); text-decoration:none; white-space:nowrap; padding: 0.2rem 0; border-bottom: 2px solid transparent; }
+  .navlinks a:hover{ color: var(--accent); border-color: var(--accent); }
+
+  /* ============ HERO ============ */
+  .hero{
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-photo{
+    position:absolute; inset:0; z-index:0;
+    width:100%; height:100%; object-fit:cover; object-position: center 58%;
+  }
+  .hero-scrim{
+    position:absolute; inset:0; z-index:0; pointer-events:none;
+    /* fixed dark wash, independent of theme -- the hero is a photo band, not a themed surface */
+    background: linear-gradient(100deg,
+      rgba(19,15,11,0.93) 0%,
+      rgba(19,15,11,0.80) 38%,
+      rgba(19,15,11,0.42) 68%,
+      rgba(19,15,11,0.16) 100%);
+  }
+  .contour-bg{
+    position:absolute; inset:0; z-index:0; pointer-events:none; opacity:0.5;
+  }
+  .strata-strip{
+    position:relative; z-index:1; display:flex; height:10px;
+  }
+  .strata-strip span{ flex:1; }
+  .hero-inner{
+    position:relative; z-index:1;
+    padding: 5.5rem 0 3.4rem;
+    display:grid; gap: 2.2rem;
+  }
+  .hero-eyebrow{ display:flex; align-items:center; gap:0.6rem; }
+  .hero-eyebrow .eyebrow{ color:#E3A467; }
+  .hero-eyebrow .dot{ width:7px; height:7px; border-radius:50%; background:#8FBBAC; }
+  h1.hero-title{
+    font-size: clamp(2.4rem, 5.6vw, 4.3rem);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    max-width: 18ch;
+    color: #F7F1E4;
+  }
+  h1.hero-title .accent{ color: #E8954F; font-style: italic; font-weight: 460; }
+  .hero-sub{
+    font-size: 1.1rem;
+    color: #CBBFAC;
+    max-width: 36rem;
+  }
+  .hero-ctas{ display:flex; gap:0.9rem; flex-wrap:wrap; }
+  .btn{
+    font-family: var(--font-body); font-weight: 600; font-size: 0.92rem;
+    padding: 0.75rem 1.3rem; border-radius: 3px; text-decoration:none;
+    border: 1px solid transparent; display:inline-flex; align-items:center; gap:0.5rem;
+    transition: transform .15s ease, background .15s ease;
+  }
+  .btn-primary{ background: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover{ transform: translateY(-1px); }
+  .btn-ghost{ border-color: var(--border-strong); color: var(--ink); }
+  .btn-ghost:hover{ background: var(--bg-raised); }
+  .hero .btn-ghost{ border-color: rgba(247,241,228,0.4); color: #F7F1E4; }
+  .hero .btn-ghost:hover{ background: rgba(247,241,228,0.12); }
+
+  .factstrip{
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(13rem,1fr));
+    gap:1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 4px; overflow:hidden;
+  }
+  .factcell{
+    background: var(--bg-raised); padding: 0.95rem 1.15rem;
+  }
+  .factcell .k{ font-family: var(--font-mono); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-faint); }
+  .factcell .v{ font-family: var(--font-mono); font-size:0.98rem; margin-top:0.25rem; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .factcell .v.open{ color: var(--accent2); }
+  .factcell .v.closed{ color: var(--ink-faint); }
+
+  /* ============ GALLERY ============ */
+  .gallery{
+    display:grid; gap:0.9rem;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: 9rem;
+    grid-auto-flow: dense;
+  }
+  .shot{
+    position:relative; overflow:hidden; border-radius:5px;
+    border:1px solid var(--border); background: var(--bg-sunken);
+    grid-column: span 2; grid-row: span 1;
+  }
+  .shot.big{ grid-column: span 4; grid-row: span 2; }
+  .shot img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .5s ease; }
+  .shot:hover img{ transform: scale(1.045); }
+  .shot figcaption{
+    position:absolute; left:0; right:0; bottom:0; z-index:1;
+    padding: 0.55rem 0.7rem 0.6rem;
+    background: linear-gradient(180deg, rgba(19,15,11,0) 0%, rgba(19,15,11,0.72) 100%);
+    color:#F2ECDF; font-size:0.72rem; line-height:1.3;
+  }
+  .shot figcaption b{
+    display:block; font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:#E3A467; font-weight:500; margin-bottom:0.15rem;
+  }
+  @media (max-width: 760px){
+    .gallery{ grid-template-columns: repeat(2, 1fr); grid-auto-rows: 8rem; }
+    .shot{ grid-column: span 1; }
+    .shot.big{ grid-column: span 2; grid-row: span 1; }
+  }
+
+  /* fiche thumbnails */
+  .fiche.has-img{ grid-template-columns: 5.5rem 1fr 8rem; }
+  .fiche-thumb{ border-radius:4px; overflow:hidden; border:1px solid var(--border); align-self:start; }
+  .fiche-thumb img{ width:100%; height:6.5rem; object-fit:cover; display:block; }
+  @media (max-width: 760px){
+    .fiche.has-img{ grid-template-columns: 5.5rem 1fr; }
+    .fiche-thumb{ grid-column: 2; width:9rem; margin-top:0.8rem; }
+    .fiche-thumb img{ height:6rem; }
+  }
+  @media (max-width: 640px){
+    .fiche.has-img{ grid-template-columns: 1fr; }
+    .fiche-thumb{ grid-column: 1; }
+  }
+
+  /* ============ SECTION SHELLS ============ */
+  .section{ padding: 4.5rem 0; }
+  .section-head{ display:grid; gap:0.9rem; margin-bottom: 2.4rem; max-width: 42rem; }
+  .section h2{ font-size: clamp(1.7rem, 3vw, 2.3rem); }
+  .lede{ color: var(--ink-soft); font-size: 1.05rem; }
+  .alt{ background: var(--bg-raised); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+
+  /* stat row */
+  .stats{ display:grid; grid-template-columns: repeat(auto-fit,minmax(11rem,1fr)); gap: 1.5rem; margin-top: 2.6rem; }
+  .stat{ border-left: 2px solid var(--accent2); padding-left: 1.1rem; }
+  .stat .num{ font-family: var(--font-display); font-size: 2.6rem; font-weight: 600; color: var(--ink); line-height:1; }
+  .stat .lbl{ font-size: 0.88rem; color: var(--ink-soft); margin-top:0.35rem; max-width: 14rem; }
+
+  /* subhead + steps */
+  .subhead{ display:grid; gap:0.5rem; margin: 3.2rem 0 1.6rem; }
+  .subhead h3{ font-size: 1.4rem; }
+  .steps{ display:grid; grid-template-columns: repeat(auto-fit, minmax(13rem,1fr)); gap: 1.3rem; }
+  .step{ display:grid; grid-template-columns: 2.6rem 1fr; gap: 0.9rem; }
+  .step-num{ font-family: var(--font-mono); font-size:0.85rem; color: var(--accent); font-weight:600; padding-top:0.15rem; }
+  .step h4{ font-size:1.02rem; margin-bottom:0.35rem; }
+  .step p{ color: var(--ink-soft); font-size:0.9rem; }
+
+  /* practical info */
+  .dossier{ display:grid; gap: 2.5rem; grid-template-columns: 1.1fr 1fr; align-items:start; }
+  @media (max-width: 860px){ .dossier{ grid-template-columns: 1fr; } }
+  .card{ background: var(--bg-raised); border: 1px solid var(--border); border-radius: 6px; box-shadow: var(--shadow); }
+  .timetable{ padding: 1.6rem; }
+  .timetable h3{ font-size:1.1rem; margin-bottom:1rem; }
+  .ttable{ font-family: var(--font-mono); font-size: 0.86rem; }
+  .ttable tr{ border-bottom: 1px solid var(--border); }
+  .ttable tr:last-child{ border-bottom:none; }
+  .ttable td{ padding: 0.55rem 0.3rem; vertical-align: baseline; }
+  .ttable td:first-child{ color: var(--ink-soft); }
+  .ttable td:last-child{ text-align:right; font-variant-numeric: tabular-nums; }
+  .note{ font-size:0.82rem; color: var(--ink-faint); margin-top:0.9rem; padding-top:0.9rem; border-top:1px dashed var(--border); }
+
+  .pricing{ padding: 1.6rem; }
+  .ptable{ width:100%; font-size: 0.92rem; }
+  .ptable th{ text-align:left; font-family: var(--font-mono); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); padding-bottom:0.6rem; border-bottom: 1px solid var(--border-strong); }
+  .ptable td{ padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+  .ptable td:last-child{ text-align:right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--accent); font-weight:600; }
+  .ptable tr:last-child td{ border-bottom:none; }
+
+  .pillrow{ display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:1.2rem; }
+  .pill{ font-family: var(--font-mono); font-size:0.74rem; padding: 0.3rem 0.65rem; background: var(--accent2-soft); color: var(--accent2); border-radius: 100px; }
+
+  /* fiches */
+  .fiches{ display:grid; gap:1.1rem; }
+  .fiche{
+    display:grid; grid-template-columns: 5.5rem 1fr; gap:1.4rem;
+    padding: 1.6rem 0; border-bottom: 1px solid var(--border);
+  }
+  .fiche:last-child{ border-bottom:none; }
+  .fiche-num{ font-family: var(--font-mono); color: var(--ink-faint); font-size: 0.82rem; padding-top:0.3rem; }
+  .fiche-num b{ display:block; color: var(--accent); font-size:1.5rem; font-family: var(--font-display); font-weight:600; }
+  .fiche h3{ font-size: 1.28rem; margin-bottom: 0.55rem; }
+  .fiche p{ color: var(--ink-soft); max-width: 40rem; }
+  .fiche p + p{ margin-top:0.65rem; }
+  @media (max-width: 640px){ .fiche{ grid-template-columns: 1fr; gap:0.4rem; } .fiche-num{ display:flex; align-items:baseline; gap:0.5rem; } }
+
+  /* collections */
+  .taxon-row{ display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:1.4rem; }
+  .taxon-pill{
+    font-family: var(--font-mono); font-size:0.82rem; padding: 0.45rem 0.9rem;
+    border: 1px solid var(--border-strong); border-radius:100px; color: var(--ink);
+  }
+  .skeleton-note{ margin-top:1.4rem; color: var(--ink-soft); }
+  .fossil-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(16rem,1fr)); gap:1.2rem; margin-top:1.6rem; }
+  .fossil-card{ padding:1.4rem; }
+  .fossil-card .meta{ font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent2); }
+  .fossil-card h4{ font-size:1.12rem; margin:0.4rem 0 0.5rem; }
+  .fossil-card p{ color: var(--ink-soft); font-size:0.92rem; }
+
+  /* access */
+  .routes{ display:grid; grid-template-columns: repeat(auto-fit,minmax(16rem,1fr)); gap:1.3rem; }
+  .route-card{ padding:1.5rem; }
+  .route-card .from{ font-family:var(--font-mono); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent2); }
+  .route-card p{ margin-top:0.7rem; color: var(--ink-soft); font-size:0.95rem; }
+  .route-card .dist{ font-family:var(--font-display); font-size:1.8rem; font-weight:600; margin-top:0.9rem; }
+
+  .compass{ display:flex; justify-content:center; padding: 1rem 0 0; }
+
+  /* contact */
+  .contact-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  @media (max-width:760px){ .contact-grid{ grid-template-columns:1fr; } }
+  .stamp{
+    font-family: var(--font-mono); font-size:0.82rem; line-height:1.9;
+    border: 1px dashed var(--border-strong); border-radius:6px; padding: 1.3rem 1.5rem;
+    color: var(--ink-soft); background: var(--bg-raised);
+  }
+  .stamp b{ color: var(--ink); }
+  .contact-list{ display:grid; gap:1.1rem; }
+  .contact-list dt{ font-family:var(--font-mono); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-faint); }
+  .contact-list dd{ margin:0.2rem 0 0; font-size:1.05rem; }
+  .contact-list dd a{ text-decoration:none; }
+  .contact-list dd a:hover{ text-decoration:underline; }
+
+  footer{
+    border-top:1px solid var(--border); padding: 2.4rem 0 3rem;
+    font-size:0.82rem; color: var(--ink-faint);
+  }
+  footer .wrap{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="wrap">
+    <a class="brand" href="#top">Musée<em>·</em>Dinosaures</a>
+    <div class="navlinks">
+      <a href="#gisement">Le site</a>
+      <a href="#galerie">Galerie</a>
+      <a href="#collections">Collections</a>
+      <a href="#pratique">Horaires &amp; tarifs</a>
+      <a href="#groupes">Groupes &amp; enfants</a>
+      <a href="#parcours">Le parcours</a>
+      <a href="#acces">Accès</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main id="top">
+
+  <section class="hero">
+    <img class="hero-photo" src="img/20230129_130846-scaled.jpg" alt="" aria-hidden="true">
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <svg class="contour-bg" viewBox="0 0 800 500" preserveAspectRatio="none" aria-hidden="true">
+      <g fill="none" stroke="#F7F1E4" stroke-width="1" opacity="0.14">
+        <path d="M-20,120 C150,80 300,160 480,110 C620,70 720,130 840,90"/>
+        <path d="M-20,180 C180,140 320,210 500,170 C640,140 740,190 840,150"/>
+        <path d="M-20,240 C160,210 340,270 520,230 C660,200 760,250 840,215"/>
+        <path d="M-20,300 C200,270 360,320 540,285 C670,260 770,305 840,275"/>
+        <path d="M-20,360 C150,335 330,375 520,345 C660,325 760,365 840,335"/>
+      </g>
+    </svg>
+    <div class="wrap hero-inner">
+      <div class="hero-eyebrow">
+        <span class="dot"></span>
+        <span class="eyebrow">Musée-Parc des Dinosaures — Mèze, Hérault</span>
+      </div>
+      <h1 class="hero-title">On ne visite pas une vitrine.<br>On marche <span class="accent">sur le gisement.</span></h1>
+      <p class="hero-sub">Découvert en 1996 par le paléontologue Alain Cabot, le gisement de Montmèze est aujourd'hui classé 3<sup>e</sup> site mondial de pontes de dinosaures fossiles, derrière le désert de Gobi et le Montana. Quatre fossiles exposés sur cinq sont des originaux, pas des moulages.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#pratique">Horaires &amp; tarifs</a>
+        <a class="btn btn-ghost" href="#acces">Comment venir</a>
+      </div>
+      <div class="factstrip">
+        <div class="factcell">
+          <div class="k">Aujourd'hui</div>
+          <div class="v" id="today-hours">—</div>
+        </div>
+        <div class="factcell">
+          <div class="k">Adresse</div>
+          <div class="v">RD613, Montmèze · 34140 Mèze</div>
+        </div>
+        <div class="factcell">
+          <div class="k">Coordonnées GPS</div>
+          <div class="v">43°27'28.2"N · 03°32'45.7"E</div>
+        </div>
+      </div>
+    </div>
+    <div class="strata-strip" aria-hidden="true">
+      <span style="background:#C2793E;"></span>
+      <span style="background:#9C5A2E;"></span>
+      <span style="background:#6E4525;"></span>
+      <span style="background:#4F7D74;"></span>
+      <span style="background:#3C6D62;"></span>
+    </div>
+  </section>
+
+  <section class="section" id="gisement">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Le site</span>
+        <h2>Un gisement vivant, pas un décor</h2>
+        <p class="lede measure">Le parcours traverse un terrain de fouilles réel, encore en activité. Ce que les visiteurs piétinent n'est pas une reconstitution : c'est le sol même où les paléontologues travaillent.</p>
+      </div>
+      <div class="measure reveal">
+        <p>En 1996, en prospectant les formations rocheuses de la fin du Crétacé (entre -74 et -65 millions d'années), Alain Cabot met au jour ce qui s'avère être l'un des gisements paléontologiques les plus importants d'Europe. L'année suivante, il fonde sur place un musée en plein air de 6 hectares, au cœur d'une pinède languedocienne.</p>
+        <p>Le gisement s'étend sur 50 km², avec une couche fossilifère qui peut atteindre un kilomètre d'épaisseur par endroits — des milliers d'œufs y restent probablement encore enfouis. Une dizaine d'espèces d'œufs y ont été identifiées, en majorité de forme ronde et pondus par des herbivores ; l'une d'elles, de forme oblongue, a été nommée <em>Prismatoolithus caboti</em> en l'honneur de son découvreur, et compte parmi les plus petits œufs de dinosaure carnivore connus au monde.</p>
+        <p>Il y a 70 millions d'années, cette partie de l'Europe formait un archipel d'îles au climat tropical, peuplé de crocodiles, de tortues et de varans. Quatre espèces de dinosaures propres à la région ont été identifiées sur le site, dont une en collaboration avec l'université de Montpellier II : le Titanosaure (12 m), le Rabdodon (5–6 m), le Dromaeosaure (2,5 m) et le Struthiosaurus languedocensis (4 m).</p>
+      </div>
+      <div class="stats reveal">
+        <div class="stat"><div class="num">1996</div><div class="lbl">année de la découverte, par Alain Cabot</div></div>
+        <div class="stat"><div class="num">50 km²</div><div class="lbl">superficie du gisement fossilifère</div></div>
+        <div class="stat"><div class="num">3<sup style="font-size:0.5em;">e</sup></div><div class="lbl">rang mondial des sites de pontes fossiles, après Gobi et le Montana</div></div>
+        <div class="stat"><div class="num">80%</div><div class="lbl">des fossiles exposés sont des pièces originales</div></div>
+      </div>
+
+      <div class="subhead reveal">
+        <span class="eyebrow">Sur le terrain</span>
+        <h3>Comment on fouille un nid d'œufs</h3>
+      </div>
+      <div class="steps reveal">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div><h4>Repérage</h4><p>Des fragments de coquille enfoncés verticalement dans le sol, disposés en cercle, signalent la présence d'un nid.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div><h4>Consolidation</h4><p>Une tranchée est creusée autour du nid pour former une motte. Le nid est protégé par du papier humidifié, puis enveloppé dans une coque de plâtre armée de toile.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div><h4>Retournement</h4><p>Une fois le plâtre sec, la motte est retournée à l'aide de leviers puis acheminée vers le laboratoire.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div><h4>Dégagement</h4><p>Le dégagement fait apparaître les œufs un à un. Quelques jours plus tard, le nid est entièrement libéré et l'étude de la ponte peut commencer.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="galerie">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Galerie</span>
+        <h2>Ce que l'on croise sur le parcours</h2>
+        <p class="lede measure">Reconstitutions grandeur réelle, fossiles originaux, œufs fossilisés et vues du chantier de fouilles — un aperçu de ce qui attend les visiteurs.</p>
+      </div>
+      <div class="gallery reveal">
+        <figure class="shot big">
+          <img src="img/DSC0049-2-scaled.jpg" alt="Visite du musée-parc des dinosaures de Mèze">
+          <figcaption><b>Sur le terrain</b>Le parcours de visite, à ciel ouvert</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/dinosaure_reconstitutions_1.jpg" alt="Reconstitution grandeur réelle d'un dinosaure">
+          <figcaption><b>Reconstitution</b>Grandeur réelle</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/dinosaure_oeuf_1.jpg" alt="Œuf de dinosaure fossilisé exposé au musée">
+          <figcaption><b>Œuf fossilisé</b>Pièce du gisement</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/dinosaure_fossile_4.jpg" alt="Fossile original de dinosaure exposé en vitrine">
+          <figcaption><b>Fossile original</b>Pièce de collection</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/DSC0054-2-scaled.jpg" alt="Vue du musée-parc des dinosaures de Mèze">
+          <figcaption><b>Visite</b>Le musée-parc</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/dinosaure_reconstitutions_3.jpg" alt="Reconstitution de dinosaure dans le parc">
+          <figcaption><b>Reconstitution</b>Dans le parc</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/dinosaure_decouverte_1.jpg" alt="Chantier de fouilles de dinosaures à Mèze">
+          <figcaption><b>Fouilles</b>Chantier actif</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/dinosaure_oeuf_3.jpg" alt="Œuf de dinosaure mis au jour sur le site">
+          <figcaption><b>Œuf fossilisé</b>Mis au jour sur site</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/dinosaure_reconstitutions_8.jpg" alt="Reconstitution de dinosaure herbivore">
+          <figcaption><b>Reconstitution</b>Herbivore</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/dinosaure_dinosaures_2.jpg" alt="Dinosaure présenté dans le parcours du musée">
+          <figcaption><b>Au fil du parcours</b>Espèce du musée</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/dinosaure_fossile_6.jpg" alt="Fossile de dinosaure présenté en vitrine">
+          <figcaption><b>Fossile original</b>En vitrine</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/dinosaure_decouverte_10.jpg" alt="Vue du gisement de fouilles à Montmèze">
+          <figcaption><b>Fouilles</b>Le gisement</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="collections">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Collections</span>
+        <h2>Les pièces maîtresses du parcours</h2>
+        <p class="lede measure">Des reconstitutions grandeur réelle mises en scène dans la pinède, des fossiles d'exception, et les empreintes qui ont fait la réputation scientifique du Languedoc.</p>
+      </div>
+
+      <div class="measure reveal">
+        <p>Le parcours met en scène huit dinosaures reconstitués à l'échelle réelle : Tyrannosaure Rex, Spinosaure, Tricératops, Stégosaure, Iguanodon, Deinonychus, Troodon et Parasaurolophus.</p>
+      </div>
+      <div class="taxon-row reveal">
+        <span class="taxon-pill">Tyrannosaure Rex</span>
+        <span class="taxon-pill">Spinosaure</span>
+        <span class="taxon-pill">Tricératops</span>
+        <span class="taxon-pill">Stégosaure</span>
+        <span class="taxon-pill">Iguanodon</span>
+        <span class="taxon-pill">Deinonychus</span>
+        <span class="taxon-pill">Troodon</span>
+        <span class="taxon-pill">Parasaurolophus</span>
+      </div>
+      <p class="measure skeleton-note reveal">Le point fort du musée reste le squelette de Brachiosaure, long de 25 mètres et haut de 12 — accompagné de ceux d'un Allosaure et d'un Tricératops.</p>
+
+      <div class="subhead reveal">
+        <span class="eyebrow">Fossiles originaux</span>
+        <h3>Six pièces d'exception</h3>
+      </div>
+      <div class="fossil-grid reveal">
+        <div class="card fossil-card">
+          <div class="meta">Herbivore · 50 tonnes</div>
+          <h4>Squelette de Brachiosaure</h4>
+          <p>L'un des plus grands (12 m de haut, 25 m de long) et des plus lourds dinosaures herbivores. Les restes exposés proviennent d'une expédition tanzanienne de 1908.</p>
+        </div>
+        <div class="card fossil-card">
+          <div class="meta">Carnivore · Jurassique</div>
+          <h4>Allosaurus fragilis</h4>
+          <p>9 mètres de long, 3 mètres de haut. Mâchoires puissantes, griffes acérées : un prédateur théropode construit pour l'attaque rapide.</p>
+        </div>
+        <div class="card fossil-card">
+          <div class="meta">Herbivore · Crétacé</div>
+          <h4>Tricératops</h4>
+          <p>Sa tête seule pouvait mesurer 2 mètres. Collerette osseuse et trois cornes développées en faisaient un adversaire redoutable.</p>
+        </div>
+        <div class="card fossil-card">
+          <div class="meta">Carnivore · 14 m · 6 t</div>
+          <h4>Crâne de T-Rex « STAN »</h4>
+          <p>Découvert dans le Dakota du Sud dans les années 1990, ce spécimen a permis une reconstitution précise du « reptile tyran ».</p>
+        </div>
+        <div class="card fossil-card">
+          <div class="meta">Pièce rare</div>
+          <h4>Embryon de Titanosaure</h4>
+          <p>Partiellement recouvert de peau fossilisée : une griffe, divers ossements et de nombreux fragments de peau pustuleuse.</p>
+        </div>
+        <div class="card fossil-card">
+          <div class="meta">21 m² · Plateosaure</div>
+          <h4>Piste d'empreintes</h4>
+          <p>Cette surface conserve les traces de deux dinosaures différents : un Platéosaure herbivore et de petites empreintes non identifiées.</p>
+        </div>
+      </div>
+
+      <div class="subhead reveal">
+        <span class="eyebrow">Ichnologie</span>
+        <h3>Empreintes de pas du sud de la France</h3>
+      </div>
+      <p class="measure reveal">L'Aveyron, l'Hérault et le Gard renferment des milliers d'empreintes de dinosaures, étudiées par le paléo-ichnologue Jacques Sciau. Le musée en expose les moulages, réalisés avec l'association des Amis du Musée de Millau.</p>
+      <div class="routes reveal" style="margin-top:1.6rem;">
+        <div class="card route-card">
+          <div class="from">Site de Peyre</div>
+          <p>Hettangien (-205 à -200 Ma), découvert en 1997. Empreintes tridactyles de 40 à 50 cm, les plus grandes connues au monde pour le Jurassique inférieur. Ichnoespèce <em>Eubrontes giganteus</em>, attribuée à un grand théropode de 9 à 10 m proche du Mégalosaure.</p>
+        </div>
+        <div class="card route-card">
+          <div class="from">Site de Querbes</div>
+          <p>Même période, découvert en 1997. Ichnoespèce <em>Ornithopus fabrei</em> : des carnivores légers, à la démarche rapide, dont les empreintes rappellent celles des oiseaux actuels.</p>
+        </div>
+        <div class="card route-card">
+          <div class="from">Grallator variabilis</div>
+          <p>Une empreinte isolée mais exceptionnelle : elle conserve les coussinets du pied et la texture de la peau de l'animal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="pratique">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Fiche pratique</span>
+        <h2>Horaires &amp; tarifs</h2>
+        <p class="lede measure">Dernière entrée aux caisses 1h30 avant la fermeture. Les chiens sont acceptés, tenus en laisse.</p>
+      </div>
+      <div class="dossier">
+        <div class="card timetable reveal">
+          <h3>Horaires d'ouverture</h3>
+          <table class="ttable">
+            <tr><td>Février – Juin</td><td>14h00 – 18h00</td></tr>
+            <tr><td>Juillet – Août</td><td>10h00 – 19h30</td></tr>
+            <tr><td>Septembre – Octobre</td><td>14h00 – 18h00</td></tr>
+            <tr><td>Novembre</td><td>14h00 – 17h00</td></tr>
+            <tr><td>Décembre</td><td>14h00 – 17h00</td></tr>
+            <tr><td>Janvier</td><td>Fermé, sauf du 2 au 5</td></tr>
+          </table>
+          <p class="note">Fermé les 24, 25 et 31 décembre. Groupes accueillis le matin sur réservation, sauf samedi et dimanche matin.</p>
+        </div>
+        <div class="card pricing reveal">
+          <h3 style="padding:1.6rem 1.6rem 0;">Tarifs d'entrée</h3>
+          <table class="ptable" style="padding:1.6rem;">
+            <tr><th>Catégorie</th><th></th></tr>
+            <tr><td>Plein tarif</td><td>16,00 €</td></tr>
+            <tr><td>Enfants 6–13 ans</td><td>14,00 €</td></tr>
+            <tr><td>Enfants 3–5 ans</td><td>9,00 €</td></tr>
+            <tr><td>Groupe adulte (10 pers. et +)</td><td>15,00 €</td></tr>
+            <tr><td>Groupe scolaire</td><td>8,50 €</td></tr>
+          </table>
+          <div class="pillrow" style="padding:0 1.6rem 1.6rem;">
+            <span class="pill">Espèces</span>
+            <span class="pill">CB dès 10€</span>
+            <span class="pill">Chèques-vacances ANCV</span>
+          </div>
+        </div>
+      </div>
+      <p class="measure reveal" style="margin-top:2rem; color:var(--ink-soft); font-size:0.95rem;">Une buvette propose collations et boissons sur place — il n'y a pas de restaurant. Une aire de pique-nique est accessible en juillet et août. L'eau du forage du site n'est pas potable. Groupes : réservation à <a href="mailto:reservationdino@outlook.com">reservationdino@outlook.com</a>.</p>
+    </div>
+  </section>
+
+  <section class="section" id="groupes">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Groupes &amp; enfants</span>
+        <h2>Anniversaires, fouilles et sorties scolaires</h2>
+        <p class="lede measure">Au-delà de la visite libre, le musée accueille trois formules dédiées aux enfants et aux groupes.</p>
+      </div>
+      <div class="routes reveal">
+        <div class="card route-card">
+          <div class="from">Anniversaire enfants</div>
+          <p>Entrée au musée, invitations personnalisables, accès à l'aire de pique-nique et aux fouilles enfants. 8 enfants minimum, réservation obligatoire — un parent doit rester présent pour la surveillance du groupe.</p>
+          <table class="ttable" style="margin-top:1rem;">
+            <tr><td>Adulte</td><td>11,00 €</td></tr>
+            <tr><td>Enfant 6–13 ans</td><td>11,00 €</td></tr>
+            <tr><td>Enfant 3–5 ans</td><td>7,00 €</td></tr>
+          </table>
+        </div>
+        <div class="card route-card">
+          <div class="from">Fouilles enfants</div>
+          <p>Un espace de 60 m² où un squelette et des ossements de dinosaures sont enfouis dans le sable. Une initiation ludique aux méthodes de fouille archéologique — « de futures vocations naissent ainsi », selon le musée.</p>
+          <div class="pillrow"><span class="pill">60 m²</span><span class="pill">Inclus à l'entrée</span></div>
+        </div>
+        <div class="card route-card">
+          <div class="from">Groupes scolaires</div>
+          <p>Un panorama complet, des dinosaures à la préhistoire humaine jusqu'à Homo sapiens. Durée environ 2h30 ; minimum 20 personnes pour un accès en semaine le matin. Pique-nique possible en pinède ou à la base de Bessilles (2,5 km) — prévoir eau et casquettes.</p>
+          <table class="ttable" style="margin-top:1rem;">
+            <tr><td>Par enfant</td><td>8,50 €</td></tr>
+            <tr><td>Accompagnateur (1 gratuit / 5 enfants)</td><td>8,50 €</td></tr>
+            <tr><td>Chauffeur de bus</td><td>Gratuit</td></tr>
+          </table>
+          <p class="note">Réservation : <a href="mailto:reservationdino@outlook.com">reservationdino@outlook.com</a> ou <a href="tel:+33760009222">07 60 00 92 22</a> (9h–18h, 7j/7). Préciser établissement, ville, date, nombre d'enfants et d'accompagnateurs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="parcours">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Le parcours</span>
+        <h2>Huit questions qui guident la visite</h2>
+        <p class="lede measure">Du nom donné aux dinosaures à leur disparition, le parcours répond, étape après étape, aux questions que tout visiteur se pose face au gisement.</p>
+      </div>
+      <div class="fiches">
+        <div class="fiche reveal">
+          <div class="fiche-num"><b>01</b>Étymologie</div>
+          <div>
+            <h3>Pourquoi « dinosaure » ?</h3>
+            <p>Le mot vient du grec et signifie « terribles lézards ». Il a été créé en 1842 par le paléontologue britannique Sir Richard Owen pour désigner ces reptiles disparus dont on découvrait alors les premiers squelettes fossilisés.</p>
+          </div>
+        </div>
+        <div class="fiche has-img reveal">
+          <div class="fiche-num"><b>02</b>Définition</div>
+          <div>
+            <h3>Qu'est-ce qu'un dinosaure, exactement ?</h3>
+            <p>Un dinosaure est un reptile particulier : ses pattes se tiennent verticalement sous le corps, et non sur les côtés comme chez les lézards actuels. La classification scientifique distingue deux grands groupes, les Saurischiens et les Ornithischiens, selon la structure de leur bassin.</p>
+          </div>
+          <div class="fiche-thumb"><img src="img/dinosaure_reconstitutions_3.jpg" alt="Reconstitution grandeur réelle illustrant la posture verticale des dinosaures"></div>
+        </div>
+        <div class="fiche reveal">
+          <div class="fiche-num"><b>03</b>Diversité</div>
+          <div>
+            <h3>Une famille bien plus vaste qu'on ne l'imagine</h3>
+            <p>On recense environ 1000 espèces de dinosaures, réparties en 50 familles. Leurs tailles varient considérablement : certaines espèces n'étaient pas plus grandes qu'un chat, d'autres atteignaient 30 mètres de long et 12 mètres de haut.</p>
+          </div>
+        </div>
+        <div class="fiche has-img reveal">
+          <div class="fiche-num"><b>04</b>Régime</div>
+          <div>
+            <h3>Carnivores et herbivores</h3>
+            <p>Les carnivores se nourrissaient de la chair d'autres animaux, grâce à des dents pointues adaptées à la capture et à la découpe. Les herbivores, eux, présentaient des régimes bien plus variés : feuillage tendre, végétaux ligneux ou plantes basses, selon la forme de leurs dents et de leur mâchoire.</p>
+          </div>
+          <div class="fiche-thumb"><img src="img/dinosaure_reconstitutions_8.jpg" alt="Reconstitution de dinosaure herbivore du parcours"></div>
+        </div>
+        <div class="fiche has-img reveal">
+          <div class="fiche-num"><b>05</b>Reproduction</div>
+          <div>
+            <h3>Tous ovipares</h3>
+            <p>Sans exception, tous les dinosaures pondaient des œufs. Certaines espèces utilisaient des monticules de végétation en fermentation pour maintenir une incubation naturelle, une technique que l'on retrouve chez certains oiseaux actuels.</p>
+          </div>
+          <div class="fiche-thumb"><img src="img/dinosaure_oeuf_3.jpg" alt="Œuf de dinosaure fossilisé exposé au musée"></div>
+        </div>
+        <div class="fiche has-img reveal">
+          <div class="fiche-num"><b>06</b>Paléontologie</div>
+          <div>
+            <h3>La science qui lit la pierre</h3>
+            <p>La paléontologie est littéralement « l'étude de ce qui est ancien ». Elle s'appuie sur l'examen des fossiles — ossements, œufs ou empreintes minéralisés au fil de millions d'années — pour reconstituer la vie disparue.</p>
+          </div>
+          <div class="fiche-thumb"><img src="img/dinosaure_fossile_6.jpg" alt="Fossile original de dinosaure exposé en vitrine"></div>
+        </div>
+        <div class="fiche reveal">
+          <div class="fiche-num"><b>07</b>Extinction</div>
+          <div>
+            <h3>Pourquoi ont-ils disparu ?</h3>
+            <p>Trois grandes hypothèses s'affrontent encore : la thèse <strong>impactiste</strong>, qui pointe un impact météoritique (le cratère du Yucatán) ; la thèse <strong>volcaniste</strong>, qui met en cause d'immenses éruptions volcaniques en Inde ; et la thèse <strong>gradualiste</strong>, qui privilégie des changements progressifs des écosystèmes.</p>
+          </div>
+        </div>
+        <div class="fiche reveal">
+          <div class="fiche-num"><b>08</b>Héritage</div>
+          <div>
+            <h3>Et s'ils n'avaient pas vraiment disparu ?</h3>
+            <p>Les oiseaux actuels seraient les descendants directs de petits dinosaures carnivores. L'étude de l'Archéoptéryx, fossile charnière entre reptile et oiseau, a été déterminante pour établir ce lien.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="acces">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Accès</span>
+        <h2>Venir au musée</h2>
+        <p class="lede measure">Le musée se situe en bordure de l'étang de Thau, à mi-chemin entre Montpellier et Béziers (35 km de chacune), entre Mèze (5 km) et Montagnac (6 km).</p>
+      </div>
+      <div class="routes">
+        <div class="card route-card reveal">
+          <div class="from">Depuis Montpellier</div>
+          <p>Autoroute A9, sortie n°33 « Sète / Mèze », puis RD613 jusqu'à Mèze. Continuer direction Béziers pendant 5 km et tourner à droite juste après Montmèze.</p>
+          <div class="dist">35 km</div>
+        </div>
+        <div class="card route-card reveal">
+          <div class="from">Depuis Béziers</div>
+          <p>Prendre l'A75 (gratuite) direction Clermont-Ferrand, sortie n°59. Suivre la RD613 sur 4,5 km après Montagnac, puis tourner à gauche au grand dinosaure visible depuis la route.</p>
+          <div class="dist">35 km</div>
+        </div>
+        <div class="card route-card reveal">
+          <div class="from">GPS / navigation</div>
+          <p>Entrer « Mèze 34140 » puis l'adresse Montmèze. 300 mètres après Montmèze, tourner à droite pour accéder au musée.</p>
+          <div class="dist">N 43°27'28.2" · E 03°32'45.7"</div>
+        </div>
+        <div class="card route-card reveal">
+          <div class="from">Depuis le Cap d'Agde</div>
+          <p>Direction Marseillan-Plage, puis Marseillan ville, puis RD613 vers Mèze. Traverser la zone artisanale en suivant « Béziers / Montagnac / Musée parc dinosaure », puis Montmèze et à droite au carrefour.</p>
+          <div class="dist">26 km · 30 min</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Contact</span>
+        <h2>Nous écrire, nous appeler</h2>
+      </div>
+      <div class="contact-grid">
+        <dl class="contact-list reveal">
+          <div>
+            <dt>Adresse</dt>
+            <dd>Musée-Parc des Dinosaures<br>RD613, Route de Pézenas, Montmèze<br>34140 Mèze</dd>
+          </div>
+          <div>
+            <dt>Téléphone</dt>
+            <dd><a href="tel:+33760009222">07 60 00 92 22</a> · <a href="tel:+33667482920">06 67 48 29 20</a></dd>
+          </div>
+          <div>
+            <dt>Email général</dt>
+            <dd><a href="mailto:mezedinosaure@yahoo.com">mezedinosaure@yahoo.com</a></dd>
+          </div>
+          <div>
+            <dt>Réservation groupes</dt>
+            <dd><a href="mailto:reservationdino@outlook.com">reservationdino@outlook.com</a></dd>
+          </div>
+        </dl>
+        <div class="stamp reveal">
+          <div><b>MUSÉE-PARC DES DINOSAURES</b></div>
+          <div>RD613 · Montmèze · 34140 Mèze</div>
+          <div>Hérault · Occitanie · France</div>
+          <div>——————————————</div>
+          <div>LAT&nbsp; 43°27'28.2" N</div>
+          <div>LON&nbsp; 03°32'45.7" E</div>
+          <div>——————————————</div>
+          <div>Individuels : accès libre, sans réservation</div>
+          <div>Groupes : sur réservation préalable</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="presse" style="padding-top:3rem; padding-bottom:3rem;">
+    <div class="wrap">
+      <div class="section-head reveal" style="margin-bottom:1.2rem;">
+        <span class="eyebrow">Presse</span>
+        <h2 style="font-size:1.3rem;">On parle du musée</h2>
+      </div>
+      <ul class="measure reveal" style="display:grid; gap:0.5rem; font-size:0.92rem; list-style:none;">
+        <li><a href="https://www.lemonde.fr/m-styles/article/2015/06/18/ou-voir-des-dinosaures-en-vrai-ou-presque_4656152_4497319.html" target="_blank" rel="noopener">Le Monde — « Où voir des dinosaures en vrai, ou presque »</a></li>
+        <li><a href="https://lord-park.com/10-parcs-pour-les-fans-de-dinosaures-en-france/" target="_blank" rel="noopener">Lord Park — « 10 parcs pour les fans de dinosaures en France »</a></li>
+        <li><a href="https://france3-regions.francetvinfo.fr/occitanie/herault/sete/herault-les-dinosaures-de-meze-un-veritable-produit-du-terroir-2817926.html" target="_blank" rel="noopener">France 3 Occitanie — « Les dinosaures de Mèze, un véritable produit du terroir »</a></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap" style="flex-direction:column; gap:0.4rem;">
+    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; width:100%;">
+      <span>Musée-Parc des Dinosaures · Mèze, Hérault</span>
+      <span>Refonte graphique non officielle — contenus et informations repris de dinosaure.eu</span>
+    </div>
+    <span>Le musée interdit tout usage commercial et toute diffusion web de prises de vue du site sans autorisation écrite — pour toute reproduction, contacter le musée directement.</span>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function seasonHours(d){
+      var m = d.getMonth(), day = d.getDate();
+      if (m === 0) { return (day >= 2 && day <= 5) ? {open:true, from:'14h', to:'17h'} : {open:false}; }
+      if (m >= 1 && m <= 5) return {open:true, from:'14h', to:'18h'};
+      if (m === 6 || m === 7) return {open:true, from:'10h', to:'19h30'};
+      if (m === 8 || m === 9) return {open:true, from:'14h', to:'18h'};
+      if (m === 10) return {open:true, from:'14h', to:'17h'};
+      if (m === 11) return (day === 24 || day === 25 || day === 31) ? {open:false} : {open:true, from:'14h', to:'17h'};
+    }
+    var el = document.getElementById('today-hours');
+    if (el) {
+      var h = seasonHours(new Date());
+      if (h && h.open) { el.textContent = 'Ouvert · ' + h.from + ' – ' + h.to; el.classList.add('open'); }
+      else { el.textContent = 'Fermé aujourd\'hui'; el.classList.add('closed'); }
+    }
+
+    var items = document.querySelectorAll('.reveal');
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      items.forEach(function(i){ i.classList.add('is-visible'); });
+    } else {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+        });
+      }, {threshold: 0.12, rootMargin: '0px 0px -40px 0px'});
+      items.forEach(function(i){ io.observe(i); });
+    }
+  })();
+</script>
+
+</body>
+</html>
